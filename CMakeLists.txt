@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.21)
 
 # Change this to the name of your plugin
 # This cannot have spaces (but PRODUCT_NAME can)
-set(PROJECT_NAME "Pamplejuce")
+set(PROJECT_NAME "SlinkyEQ")
 
 # Set the plugin formats you'll be building here.
 # Valid formats: AAX Unity VST AU AUv3 Standalone
@@ -45,8 +45,8 @@ juce_add_plugin("${PROJECT_NAME}"
     # VERSION ...                               # Set this if the plugin version is different to the project version
     # ICON_BIG ...                              # ICON_* arguments specify a path to an image file to use as an icon for the Standalone
     # ICON_SMALL ...
-    COMPANY_NAME Pamplejuce
-    BUNDLE_ID com.pamplejuce.pamplejuce
+    COMPANY_NAME Thonne
+    BUNDLE_ID com.thonne.thonne
     # IS_SYNTH TRUE/FALSE                       # Is this a synth or an effect?
     # NEEDS_MIDI_INPUT TRUE/FALSE               # Does the plugin need midi input?
     # NEEDS_MIDI_OUTPUT TRUE/FALSE              # Does the plugin need midi output?
@@ -56,17 +56,17 @@ juce_add_plugin("${PROJECT_NAME}"
     PLUGIN_MANUFACTURER_CODE Pamp               # This has to be one uppercase, rest lower for AU formats
     PLUGIN_CODE P001                            # A unique four-character plugin id with at least one upper-case character
     FORMATS "${FORMATS}"
-    PRODUCT_NAME "${PROJECT_NAME}")        # The name of the final executable, which can differ from the target name
+    PRODUCT_NAME "Slinky EQ")        # The name of the final executable, which can differ from the target name
 
 # C++20 please
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_20)
 
 # Manually list all .h and .cpp files for the plugin
 set(SourceFiles
-    Source/PluginEditor.h
-    Source/PluginProcessor.h
-    Source/PluginEditor.cpp
-    Source/PluginProcessor.cpp)
+    Source/SlinkyEditor.h
+    Source/SlinkyProcessor.h
+    Source/SlinkyEditor.cpp
+    Source/SlinkyProcessor.cpp)
 target_sources("${PROJECT_NAME}" PRIVATE ${SourceFiles})
 
 # No, we don't want our source buried in extra nested folders
