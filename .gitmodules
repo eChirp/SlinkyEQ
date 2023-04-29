@@ -2,3 +2,6 @@
 	path = JUCE
 	url = https://github.com/juce-framework/JUCE/
 	branch = develop
+[submodule "modules/filter"]
+	path = modules/filter
+	url = git@github.com:eChirp/DSPFilters.git
