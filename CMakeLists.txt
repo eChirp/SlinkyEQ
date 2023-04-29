@@ -21,6 +21,14 @@ project(${PROJECT_NAME} VERSION ${CURRENT_VERSION})
 # By default we don't want Xcode schemes to be made for modules, etc
 set(CMAKE_XCODE_GENERATE_SCHEME OFF)
 
+# No ZERO_CHECK target on XCode (it helps bust cache for cmake)
+if(CMAKE_GENERATOR STREQUAL Xcode)
+    set(CMAKE_SUPPRESS_REGENERATION true)
+endif()
+
+# clang-tidy needs this to be happy
+set(CMAKE_EXPORT_COMPILE_COMMANDS TRUE)
+
 # Enable to build universal binaries on macOS, increasing build time
 # This only affects local builds, GitHub actions always builds Universals
 # set(CMAKE_OSX_ARCHITECTURES arm64 x86_64)
@@ -40,6 +48,8 @@ option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects
 # On Github Actions, it's managed by actions/checkout
 add_subdirectory(JUCE)
 
+juce_add_module(modules/filter/equalizer)
+
 # Check the readme at `docs/CMake API.md` in the JUCE repo for full config
 juce_add_plugin("${PROJECT_NAME}"
     # VERSION ...                               # Set this if the plugin version is different to the project version
@@ -53,8 +63,8 @@ juce_add_plugin("${PROJECT_NAME}"
     # IS_MIDI_EFFECT TRUE/FALSE                 # Is this plugin a MIDI effect?
     # EDITOR_WANTS_KEYBOARD_FOCUS TRUE/FALSE    # Does the editor need keyboard focus?
     COPY_PLUGIN_AFTER_BUILD TRUE # On MacOS, plugin will be copied to /Users/you/Library/Audio/Plug-Ins/
-    PLUGIN_MANUFACTURER_CODE Pamp               # This has to be one uppercase, rest lower for AU formats
-    PLUGIN_CODE P001                            # A unique four-character plugin id with at least one upper-case character
+    PLUGIN_MANUFACTURER_CODE Echi               # This has to be one uppercase, rest lower for AU formats
+    PLUGIN_CODE E001                            # A unique four-character plugin id with at least one upper-case character
     FORMATS "${FORMATS}"
     PRODUCT_NAME "Slinky EQ")        # The name of the final executable, which can differ from the target name
 
@@ -76,7 +86,7 @@ set_target_properties("${PROJECT_NAME}" PROPERTIES FOLDER "")
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR}/Source PREFIX "" FILES ${SourceFiles})
 
 # Setup our binary data as a target
-juce_add_binary_data(Assets SOURCES pamplejuce.png)
+juce_add_binary_data(Assets SOURCES slicky.png)
 
 # Required for Linux happiness:
 # See https://forum.juce.com/t/loading-pytorch-model-using-binarydata/39997/2
@@ -106,7 +116,8 @@ set_target_properties(Assets PROPERTIES FOLDER "Targets")
 
 # We'll need to link to these from our plugin as well as our tests
 set(JUCE_DEPENDENCIES
-    juce::juce_audio_utils)
+    juce::juce_audio_utils
+    equalizer)
 
 target_compile_definitions("${PROJECT_NAME}"
     PUBLIC
